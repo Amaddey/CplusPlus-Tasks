@@ -1,0 +1,136 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Node {
+    Node* left;
+    Node* right;
+    Node* parent;
+    int numBus;
+    int numPut;
+    string fullname;
+    int countHuman;
+
+};
+
+
+
+class Tree {
+    Node* root;
+    int count;
+public:
+    Tree() : root(nullptr),count(0) {}
+
+    void addBus(Node* Bus) {
+        Bus->left = nullptr;
+        Bus->right = nullptr;
+        Node* node = root;
+        Node* tmp = nullptr;
+
+    while (node != nullptr)
+    {
+        tmp = node;
+        if (Bus->numBus < tmp->numBus) {
+            node = node->left;
+        }
+        else {
+            node = node->left;
+        }
+    }
+
+    Bus->parent = tmp;
+    if (tmp == nullptr) {
+        root = Bus;
+    }
+    else if (Bus->numBus < tmp->numBus) {
+        tmp->left = Bus;
+    }
+    else
+    {
+        tmp->right = Bus;
+    }
+    count++;
+    }
+
+    void Print(Node* tmp)
+    {
+        if (tmp != NULL)
+        {
+            Print(tmp->left);
+            cout << tmp->fullname << endl;
+            cout << tmp->numBus << endl;
+            cout << tmp->numPut << endl;
+            Print(tmp->right);
+        }
+    }
+
+    Node* GetRoot()
+    {
+        return this->root;
+    }
+
+    int FindMin() {
+        Node* tmp = this->root;
+        int result = this->root->numBus;
+        while (tmp->left != NULL) {
+            result = tmp->left->numBus;
+            tmp = tmp->left;
+        }
+        return result;
+    }
+    int FindMax() {
+        Node* tmp = this->root;
+        int result = 0;
+        while (tmp->right != NULL) {
+            result = tmp->right->numBus;
+            tmp = tmp->right;
+        }
+        return result;
+    }
+
+};
+
+int  main() {
+    
+    Tree NewTreeBus;
+    Node* one = new Node;
+    Node* two = new Node;
+    string name;
+    int put, bus, count;
+
+    cout << "First bus :";
+    cin >> bus;
+    cout << "Name of first bus driver :";
+    getline(cin, name);
+    cin.ignore(123, '\n');
+    cout << "Number of path :";
+    cin >> put;
+    cout << "Count of passengers : ";
+    cin >> count;
+    one->fullname = name;
+    one->numPut = put;
+    one->numBus = bus;
+    one->countHuman = count;
+    NewTreeBus.addBus(one);
+    cout << "Second bus :";
+    cin >> bus;
+    cout << "Name of second bus driver :";
+    getline(cin, name);
+    cin.ignore(123, '\n');
+    cout << "Number of path :";
+    cin >> put;
+    cout << "Count of passengers";
+    cin >> count;
+
+    two->fullname = name;
+    two->numPut = put;
+    two->numBus = bus;
+    two->countHuman = count;
+    NewTreeBus.addBus(two);
+    NewTreeBus.Print(NewTreeBus.GetRoot());
+    
+    cout << "\nFindMin : " << NewTreeBus.FindMin() << endl;
+    cout << "\nFindMax : " << NewTreeBus.FindMax() << endl;
+
+    return 0;
+}
